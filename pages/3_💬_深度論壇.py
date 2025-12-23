@@ -5,7 +5,8 @@ import plotly.express as px
 import plotly.graph_objects as go
 import sys
 import os
-
+def apply_global_style():
+    st.markdown(custom_css, unsafe_allow_html=True)
 sys.path.append(os.path.abspath('.'))
 try:
     from shared import styles

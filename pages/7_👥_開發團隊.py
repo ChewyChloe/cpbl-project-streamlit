@@ -2,7 +2,8 @@ import streamlit as st
 from shared.styles import apply_global_style
 
 apply_global_style()
-
+def apply_global_style():
+    st.markdown(custom_css, unsafe_allow_html=True)
 st.header("👥 開發團隊")
 st.markdown("---")
 

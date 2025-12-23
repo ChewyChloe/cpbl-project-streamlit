@@ -2,9 +2,7 @@ import streamlit as st
 import os
 import requests
 import time
-from google import genai
-from google.genai import types
-from shared.styles import apply_global_style
+import google.generativeai as genai
 
 apply_global_style()
 st.header("🧑‍💼 AI 對話系統")

@@ -1,0 +1,14 @@
+streamlit
+google-generativeai
+plotly
+imbalanced-learn
+catboost
+streamlit-image-coordinates
+pillow
+requests
+matplotlib
+pandas
+beautifulsoup4
+xgboost
+lightgbm
+scikit-learn

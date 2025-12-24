@@ -122,7 +122,9 @@ textarea[data-testid="stChatInputTextArea"]::placeholder {
 def apply_global_style():
     st.markdown(custom_css, unsafe_allow_html=True)
 
-apply_local_style()
+apply_global_style()
+
+st.title("CPBL 棒球分析系統")
 
 try:
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))

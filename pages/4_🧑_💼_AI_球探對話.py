@@ -8,7 +8,11 @@ from shared.styles import apply_global_style
 apply_global_style()
 st.header("🧑‍💼 AI 對話系統")
 
-gemini_key = "AIzaSyBN5FU3Wk-DcFeRwINM9F6jBLwmS94chng"
+if "GEMINI_API_KEY" in st.secrets:
+    gemini_key = st.secrets["GEMINI_API_KEY"]
+else:
+    st.error("請在 Streamlit Secrets 中設定 GEMINI_API_KEY")
+    st.stop()
 client = genai.Client(api_key=gemini_key)
 
 GITHUB_USER = "ChewyChloe"

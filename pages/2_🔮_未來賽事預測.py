@@ -7,12 +7,11 @@ import joblib
 from sklearn.preprocessing import StandardScaler
 from shared.styles import apply_global_style
 
-GITHUB_BASE = "https://raw.githubusercontent.com/ChewyChloe/cpbl-project/main/"
-MODEL_URL = GITHUB_BASE + "cpbl_ai_model.pkl"
-META_MODEL_URL = GITHUB_BASE + "cpbl_meta_learner.pkl"
-SCALER_URL = GITHUB_BASE + "scaler.pkl"
-BATTER_DATA_URL = GITHUB_BASE + "player_features_for_app.csv"
-PITCHER_DATA_URL = GITHUB_BASE + "pitcher_stats_for_app.csv"
+MODEL_PATH = "cpbl_ai_model.pkl"
+META_PATH = "cpbl_meta_learner.pkl"
+SCALER_PATH = "scaler.pkl"
+BAT_DATA_PATH = "player_features_for_app.csv"
+PIT_DATA_PATH = "pitcher_stats_for_app.csv"
 
 PARK_FACTORS = {
     "洲際": {"Runs": 1.19}, "澄清湖": {"Runs": 1.03}, "天母": {"Runs": 0.96},
@@ -55,28 +54,21 @@ TEAM_ROSTERS = {
 @st.cache_resource
 @st.cache_resource
 def load_all_resources():
-    try:
-        df_b = pd.read_csv(BATTER_DATA_URL) 
-        df_p = pd.read_csv(PITCHER_DATA_URL)
-        df_b.columns = df_b.columns.str.strip()
-        df_p.columns = df_p.columns.str.strip()
-    except Exception as e:
-        st.error(f"資料讀取失敗: {e}")
-        df_b, df_p = pd.DataFrame(), pd.DataFrame()
-
-    for name, url in {"model.pkl": MODEL_URL, "meta.pkl": META_MODEL_URL, "scaler.pkl": SCALER_URL}.items():
-        if not os.path.exists(name):
-            try:
-                r = requests.get(url)
-                with open(name, "wb") as f:
-                    f.write(r.content)
-            except:
-                st.error(f"無法下載 {name}")
-
-    m = joblib.load("model.pkl") if os.path.exists("model.pkl") else None
-    me = joblib.load("meta.pkl") if os.path.exists("meta.pkl") else None
-    sc = joblib.load("scaler.pkl") if os.path.exists("scaler.pkl") else None
-
+    files = [MODEL_PATH, META_PATH, SCALER_PATH, BAT_DATA_PATH, PIT_DATA_PATH]
+    for f in files:
+        if not os.path.exists(f):
+            st.error(f"找不到檔案: {f}")
+            st.stop()
+    
+    m = joblib.load(MODEL_PATH)
+    me = joblib.load(META_PATH)
+    sc = joblib.load(SCALER_PATH)
+    df_b = pd.read_csv(BAT_DATA_PATH)
+    df_p = pd.read_csv(PIT_DATA_PATH)
+    
+    df_b.columns = df_b.columns.str.strip()
+    df_p.columns = df_p.columns.str.strip()
+    
     return m, me, sc, df_b, df_p
 
 model, meta_model, scaler, df_bat, df_pit = load_all_resources()

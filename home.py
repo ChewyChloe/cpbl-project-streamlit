@@ -2,6 +2,8 @@ import streamlit as st
 import os
 import sys
 
+st.set_page_config(layout='wide', page_title='CPBL 棒球分析系統')
+
 custom_css = """
 <style>
 /* 全局 */
@@ -120,16 +122,14 @@ textarea[data-testid="stChatInputTextArea"]::placeholder {
 def apply_global_style():
     st.markdown(custom_css, unsafe_allow_html=True)
 
+apply_local_style()
 
-st.set_page_config(layout='wide', page_title='CPBL 棒球分析系統')
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 try:
-    from shared.styles import apply_global_style
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
     from shared.resources import load_resources
-    apply_global_style()
     model, df_stats = load_resources()
-except ImportError:
-    st.warning("⚠️ 無法載入樣式或資源")
+except Exception:
+    pass
 
 # 主頁
 st.markdown("""

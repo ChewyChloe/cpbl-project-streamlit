@@ -2,20 +2,17 @@ import streamlit as st
 import os
 import sys
 
-# 設定頁面資訊
 st.set_page_config(layout='wide', page_title='CPBL 棒球分析系統')
-
-# 匯入 shared 資料夾中的樣式與資源
-# 注意：確保 GitHub 上有 shared 資料夾和 __init__.py
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 try:
     from shared.styles import apply_global_style
     from shared.resources import load_resources
     apply_global_style()
     model, df_stats = load_resources()
 except ImportError:
-    st.warning("⚠️ 無法載入樣式或資源，請確認 shared 資料夾結構正確。")
+    st.warning("⚠️ 無法載入樣式或資源")
 
-# --- 主頁內容 ---
+# 主頁
 st.markdown("""
 <div style="background-color: #001844; padding: 2rem; border-radius: 1rem; color: white; margin-bottom: 2rem;">
     <h1 style='color: white; margin:0;'>CPBL 棒球分析系統</h1>
@@ -23,7 +20,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 顯示數據指標
+# 數據指標
 m1, m2, m3 = st.columns(3)
 m1.metric("模型準確率", "95.9%", "高準確率")
 m2.metric("已執行預測", "761 場", "場場收錄")
@@ -43,6 +40,5 @@ if len(podcasts) == 1:
 for i, podcast in enumerate(podcasts):
     with cols[i]:
         embed_url = f"https://www.youtube.com/embed/{podcast['video_id']}"
-        # 使用簡單的 iframe 顯示影片
         st.video(f"https://www.youtube.com/watch?v={podcast['video_id']}")
         st.caption(podcast['title'])

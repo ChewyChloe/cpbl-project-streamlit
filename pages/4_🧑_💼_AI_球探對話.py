@@ -2,7 +2,7 @@ import streamlit as st
 import os
 import requests
 import time
-import google.generativeai as genai
+from google import genai
 from shared.styles import apply_global_style
 
 apply_global_style()

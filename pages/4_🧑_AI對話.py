@@ -21,7 +21,6 @@ GITHUB_FOLDER = "AI_RAG"
 GITHUB_API_URL = f"https://api.github.com/repos/{GITHUB_USER}/{GITHUB_REPO}/contents/{GITHUB_FOLDER}"
 TARGET_STORE_NAME = "CPBL_Scout_Knowledge_v6"
 
-@st.cache_resource(show_spinner="同步 GitHub 知識庫")
 def auto_initialize_rag(_client):
     store = None
 

@@ -3,6 +3,7 @@ import os
 import requests
 import time
 import google.generativeai as genai
+from shared.styles import apply_global_style
 
 apply_global_style()
 st.header("🧑‍💼 AI 對話系統")

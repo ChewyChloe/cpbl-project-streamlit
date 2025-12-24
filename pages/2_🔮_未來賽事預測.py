@@ -169,11 +169,7 @@ if st.button("🚀 執行預測", use_container_width=True):
                 st.markdown("### 3. 最終推論與修正")
                 st.write(f"- 球場因子 (PF): `{pf_val:.2f}`")
                 st.write(f"- 模型原始預測: `{win_prob_raw*100:.2f}%`")
-
-                st.latex(r"Logit_{raw} = \ln\left(\frac{P_{raw}}{1-P_{raw}}\right) = " + f"{logit_raw:.3f}")
                 st.write(f"- 主場修正強度: `+{adjustment}`")
-                st.latex(r"Prob_{final} = \frac{1}{1 + e^{-(Logit_{raw} + " + str(adjustment) + ")}}")
-
                 st.success(f"修正後最終勝率: **{win_prob*100:.2f}%**")
 
             # 圖表

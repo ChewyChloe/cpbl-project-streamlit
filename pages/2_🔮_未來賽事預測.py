@@ -53,17 +53,31 @@ TEAM_ROSTERS = {
 }
 
 @st.cache_resource
+@st.cache_resource
 def load_all_resources():
-    files = {"model.pkl": MODEL_URL, "meta.pkl": META_MODEL_URL, "scaler.pkl": SCALER_URL, "bat.csv": BATTER_DATA_URL, "pit.csv": PITCHER_DATA_URL}
-    for name, url in files.items():
-        if not os.path.exists(name): os.system(f"wget -q -O {name} {url}")
+    try:
+        df_b = pd.read_csv(BATTER_DATA_URL) 
+        df_p = pd.read_csv(PITCHER_DATA_URL)
+        df_b.columns = df_b.columns.str.strip()
+        df_p.columns = df_p.columns.str.strip()
+    except Exception as e:
+        st.error(f"資料讀取失敗: {e}")
+        df_b, df_p = pd.DataFrame(), pd.DataFrame()
 
-    df_b = pd.read_csv("bat.csv")
-    df_p = pd.read_csv("pit.csv")
-    df_b.columns = df_b.columns.str.strip()
-    df_p.columns = df_p.columns.str.strip()
+    for name, url in {"model.pkl": MODEL_URL, "meta.pkl": META_MODEL_URL, "scaler.pkl": SCALER_URL}.items():
+        if not os.path.exists(name):
+            try:
+                r = requests.get(url)
+                with open(name, "wb") as f:
+                    f.write(r.content)
+            except:
+                st.error(f"無法下載 {name}")
 
-    return joblib.load("model.pkl"), joblib.load("meta.pkl"), joblib.load("scaler.pkl"), df_b, df_p
+    m = joblib.load("model.pkl") if os.path.exists("model.pkl") else None
+    me = joblib.load("meta.pkl") if os.path.exists("meta.pkl") else None
+    sc = joblib.load("scaler.pkl") if os.path.exists("scaler.pkl") else None
+
+    return m, me, sc, df_b, df_p
 
 model, meta_model, scaler, df_bat, df_pit = load_all_resources()
 
